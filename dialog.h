@@ -7,6 +7,9 @@
 #include <QLabel>
 #include <QComboBox>
 #include <QTextEdit>
+#include <QLineEdit>
+#include <QGridLayout>
+#include <QPushButton>
 
 namespace Ui {
 class Dialog;
@@ -20,16 +23,17 @@ public:
     explicit Dialog(QWidget *parent = 0);
     ~Dialog();
     void createCtrlFrame();
+    void createContentFrame();
 
     //给组合框添加颜色列表
     void fillColorList(QComboBox* comboBox);
 
 public slots:
-    void ShowWindow();
-    void ShowWindowText();
-    void ShowButton();
-    void ShowButtonText();
-    void ShowBase();
+    void ShowWindow(int index);
+    void ShowWindowText(int index);
+    void ShowButton(int index);
+    void ShowButtonText(int index);
+    void ShowBase(int index);
 
 
 private:
