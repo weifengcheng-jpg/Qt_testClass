@@ -6,6 +6,8 @@
 #include <QImage>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QEvent>
+#include <QMouseEvent>
 
 class EventFilter : public QDialog
 {
