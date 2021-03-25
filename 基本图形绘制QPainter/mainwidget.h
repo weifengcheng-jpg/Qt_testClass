@@ -21,7 +21,16 @@ public:
 
 private slots:
     void ShowShape(int value);
-    void ShowPenColor()
+    void ShowPenColor();
+    void ShowPenWidth(int value);
+    void ShowPenStyle(int value);
+    void ShowPenCap(int value);
+    void ShowPenJoin(int value);
+    void ShowFillRule(int value);
+    void ShowSpreadStyle(int value);
+    void ShowBrushColor();
+    void ShowBrush(int value);
+
 
 private:
     PaintArea* m_paintArea; //绘图区域
