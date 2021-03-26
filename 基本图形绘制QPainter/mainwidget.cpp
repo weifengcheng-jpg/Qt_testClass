@@ -17,7 +17,7 @@ void MainWidget::initWidgets()
 {
     m_paintArea = new PaintArea;
     m_shapeLabel = new QLabel(tr("形状"));
-    m_shapeCombox = new m_shapeCombox;
+    m_shapeCombox = new QComboBox;
 
     m_shapeCombox->addItem(tr("Line"), PaintArea::Line);
     m_shapeCombox->addItem(tr("Rectangle"), PaintArea::Rectangle);
@@ -48,11 +48,11 @@ void MainWidget::initWidgets()
     m_penStyleLabel = new QLabel(tr("画笔风格"));
     m_penStyleComboBox = new QComboBox;
     m_penStyleComboBox->addItem(tr("SolidLine"), static_cast<int>(Qt::SolidLine));
-    m_penStyleComboBox->addItem(tr("DashLine"), static_cast<int>Qt::DashLine);
-    m_penStyleComboBox->addItem(tr("DotLine"), static_cast<int>Qt::DotLine);
-    m_penStyleComboBox->addItem((tr("DashDotLine"), static_cast<int>Qt::DashDotLine));
-    m_penStyleComboBox->addItem(tr("DashDotDotLine"), static_cast<int>Qt::DashDotDotLine);
-    m_penStyleComboBox->addItem(tr("CustomDashLine"), static_cast<int>Qt::CustomDashLine);
+    m_penStyleComboBox->addItem(tr("DashLine"), static_cast<int>(Qt::DashLine));
+    m_penStyleComboBox->addItem(tr("DotLine"), static_cast<int>(Qt::DotLine));
+    m_penStyleComboBox->addItem(tr("DashDotLine"), static_cast<int>(Qt::DashDotLine));
+    m_penStyleComboBox->addItem(tr("DashDotDotLine"), static_cast<int>(Qt::DashDotDotLine));
+    m_penStyleComboBox->addItem(tr("CustomDashLine"), static_cast<int>(Qt::CustomDashLine));
     connect(m_penStyleComboBox, SIGNAL(activated(int)), this, SLOT(ShowPenStyle(int)));
 
     m_penCapLabel = new QLabel(tr("画笔笔帽"));
@@ -96,25 +96,70 @@ void MainWidget::initWidgets()
     m_brushStyleLabel = new QLabel(tr("画刷风格"));
     m_brushStyleComboBox = new QComboBox;
     m_brushStyleComboBox->addItem(tr("SolidPattern"), static_cast<int>(Qt::SolidPattern));
-    m_brushStyleComboBox->addItem(tr("Dense1Pattern", static_cast<int>(Qt::Dense1Pattern)));
-    m_brushStyleComboBox->addItem(tr("Dense2Pattern", static_cast<int>(Qt::Dense2Pattern)));
-    m_brushStyleComboBox->addItem(tr("Dense3Pattern", static_cast<int>(Qt::Dense3Pattern)));
-    m_brushStyleComboBox->addItem(tr("Dense4Pattern", static_cast<int>(Qt::Dense4Pattern)));
-    m_brushStyleComboBox->addItem(tr("Dense5Pattern", static_cast<int>(Qt::Dense5Pattern)));
-    m_brushStyleComboBox->addItem(tr("Dense6Pattern", static_cast<int>(Qt::Dense6Pattern)));
-    m_brushStyleComboBox->addItem(tr("Dense7Pattern", static_cast<int>(Qt::Dense7Pattern)));
-    m_brushStyleComboBox->addItem(tr("HorPattern", static_cast<int>(Qt::HorPattern)));
-    m_brushStyleComboBox->addItem(tr("VerPattern", static_cast<int>(Qt::VerPattern)));
-    m_brushStyleComboBox->addItem(tr("CrossPattern", static_cast<int>(Qt::CrossPattern)));
-    m_brushStyleComboBox->addItem(tr("BDiagPattern", static_cast<int>(Qt::BDiagPattern)));
-    m_brushStyleComboBox->addItem(tr("FDiagPattern", static_cast<int>(Qt::FDiagPattern)));
-    m_brushStyleComboBox->addItem(tr("DiagCrossPattern", static_cast<int>(Qt::DiagCrossPattern)));
-    m_brushStyleComboBox->addItem(tr("LinearGradientPattern", static_cast<int>(Qt::LinearGradientPattern)));
-    m_brushStyleComboBox->addItem(tr("ConicalGradientPattern", static_cast<int>(Qt::ConicalGradientPattern)));
-    m_brushStyleComboBox->addItem(tr("RadialGradientPattern", static_cast<int>(Qt::RadialGradientPattern)));
-    m_brushStyleComboBox->addItem(tr("TexturePattern", static_cast<int>(Qt::TexturePattern)));
+    m_brushStyleComboBox->addItem(tr("Dense1Pattern"), static_cast<int>(Qt::Dense1Pattern));
+    m_brushStyleComboBox->addItem(tr("Dense2Pattern"), static_cast<int>(Qt::Dense2Pattern));
+    m_brushStyleComboBox->addItem(tr("Dense3Pattern"), static_cast<int>(Qt::Dense3Pattern));
+    m_brushStyleComboBox->addItem(tr("Dense4Pattern"), static_cast<int>(Qt::Dense4Pattern));
+    m_brushStyleComboBox->addItem(tr("Dense5Pattern"), static_cast<int>(Qt::Dense5Pattern));
+    m_brushStyleComboBox->addItem(tr("Dense6Pattern"), static_cast<int>(Qt::Dense6Pattern));
+    m_brushStyleComboBox->addItem(tr("Dense7Pattern"), static_cast<int>(Qt::Dense7Pattern));
+    m_brushStyleComboBox->addItem(tr("HorPattern"), static_cast<int>(Qt::HorPattern));
+    m_brushStyleComboBox->addItem(tr("VerPattern"), static_cast<int>(Qt::VerPattern));
+    m_brushStyleComboBox->addItem(tr("CrossPattern"), static_cast<int>(Qt::CrossPattern));
+    m_brushStyleComboBox->addItem(tr("BDiagPattern"), static_cast<int>(Qt::BDiagPattern));
+    m_brushStyleComboBox->addItem(tr("FDiagPattern"), static_cast<int>(Qt::FDiagPattern));
+    m_brushStyleComboBox->addItem(tr("DiagCrossPattern"), static_cast<int>(Qt::DiagCrossPattern));
+    m_brushStyleComboBox->addItem(tr("LinearGradientPattern"), static_cast<int>(Qt::LinearGradientPattern));
+    m_brushStyleComboBox->addItem(tr("ConicalGradientPattern"), static_cast<int>(Qt::ConicalGradientPattern));
+    m_brushStyleComboBox->addItem(tr("RadialGradientPattern"), static_cast<int>(Qt::RadialGradientPattern));
+    m_brushStyleComboBox->addItem(tr("TexturePattern"), static_cast<int>(Qt::TexturePattern));
     connect(m_brushStyleComboBox, SIGNAL(activated(int)), this, SLOT(ShowBrush(int)));
 
+    //右侧布局
+    m_rightLayout = new QGridLayout;
+
+    //形状
+    m_rightLayout->addWidget(m_shapeLabel, 0, 0);
+    m_rightLayout->addWidget(m_shapeCombox, 0 ,1);
+
+    //画笔颜色
+    m_rightLayout->addWidget(m_penColorLabel, 1, 0);
+    m_rightLayout->addWidget(m_penColorFrame, 1, 1);
+    m_rightLayout->addWidget(m_penColorBtn, 1, 2);
+
+    //画线宽度
+    m_rightLayout->addWidget(m_penWidthLabel, 2, 0);
+    m_rightLayout->addWidget(m_penwWidthSpinBox, 2, 1);
+
+    //画笔风格
+    m_rightLayout->addWidget(m_penStyleLabel, 3, 0);
+    m_rightLayout->addWidget(m_penStyleComboBox, 3, 1);
+
+    m_rightLayout->addWidget(m_penCapLabel, 4, 0);
+    m_rightLayout->addWidget(m_penCapComboBox, 4, 1);
+
+
+    m_rightLayout->addWidget(m_penJoinLabel, 5, 0);
+    m_rightLayout->addWidget(m_penJoinComboBox, 5, 1);
+
+    m_rightLayout->addWidget(m_fillRuleLabel, 6, 0);
+    m_rightLayout->addWidget(m_fillRuleComboBox, 6, 1);
+
+    m_rightLayout->addWidget(m_spreadLabel, 7, 0);
+    m_rightLayout->addWidget(m_spreadComboBox, 7, 1);
+
+    m_rightLayout->addWidget(m_brushColorLabel, 8, 0);
+    m_rightLayout->addWidget(m_brushColorFrame, 8, 1);
+    m_rightLayout->addWidget(m_brushColorBtn, 8, 2);
+
+    m_rightLayout->addWidget(m_brushStyleLabel, 9, 0);
+    m_rightLayout->addWidget(m_brushStyleComboBox, 9, 1);
+
+    QHBoxLayout* mainLayout = new QHBoxLayout(this);
+    mainLayout->addWidget(m_paintArea);
+    mainLayout->addLayout(m_rightLayout);
+
+    ShowShape(m_shapeCombox->currentIndex());
 
 }
 
@@ -145,7 +190,17 @@ void MainWidget::ShowPenJoin(int value)
 
 }
 
+void MainWidget::ShowFillRule(int value)
+{
+
+}
+
 void MainWidget::ShowSpreadStyle(int value)
+{
+
+}
+
+void MainWidget::ShowBrushColor()
 {
 
 }

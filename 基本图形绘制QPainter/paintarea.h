@@ -2,6 +2,8 @@
 #define PAINTAREA_H
 
 #include <QWidget>
+#include <QPen>
+#include <QPainter>
 
 class PaintArea : public QWidget
 {
@@ -12,6 +14,23 @@ public:
     explicit PaintArea(QWidget *parent = nullptr);
 
 signals:
+
+public:
+    void setShape(Shape shape);
+    void setPen(QPen pen);
+    void setBrush(QBrush brush);
+    void setFillRule(Qt::FillRule rule);
+
+protected:
+    void paintEvent(QPaintEvent* event) override;
+
+private:
+    Shape m_shape;
+    QPen m_pen;
+    QBrush m_brush;
+    Qt::FillRule m_fillrule;
+
+
 
 public slots:
 };
