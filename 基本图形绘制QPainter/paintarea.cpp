@@ -12,22 +12,27 @@ PaintArea::PaintArea(QWidget *parent) : QWidget(parent)
 
 void PaintArea::setShape(PaintArea::Shape shape)
 {
+    m_shape = shape;
+    update();
 
 }
 
 void PaintArea::setPen(QPen pen)
 {
-
+    m_pen = pen;
+    update();
 }
 
 void PaintArea::setBrush(QBrush brush)
 {
-
+    m_brush = brush;
+    update();
 }
 
 void PaintArea::setFillRule(Qt::FillRule rule)
 {
-
+    m_fillrule = rule;
+    update();
 }
 
 void PaintArea::paintEvent(QPaintEvent *event)
@@ -63,26 +68,37 @@ void PaintArea::paintEvent(QPaintEvent *event)
         painter.drawLine(rect.topLeft(), rect.bottomRight());
         break;
     case Rectangle:
+        painter.drawRect(rect);
         break;
     case RoundRect:
+        painter.drawRoundRect(rect);
         break;
-    case Ellipse:
+    case Ellipse: //
+        painter.drawEllipse(rect);
         break;
-    case Polygon:
+    case Polygon: //多边形
+        painter.drawPolygon(points, 4);
         break;
     case Polyline:
+        painter.drawPolyline(points, 4);
         break;
     case Points:
+        painter.drawPoints(points, 4);
         break;
     case Arc:
+        painter.drawArc(rect, startAngle, spanAngle);
         break;
     case Path:
+        painter.drawPath(path);
         break;
     case Text:
+        painter.drawText(rect, Qt::AlignCenter, tr("Hello World!"));
         break;
     case Pixmap:
+        painter.drawPixmap(50, 100, QPixmap("fly3.png"));
         break;
-
+    default:
+        break;
     }
 
 

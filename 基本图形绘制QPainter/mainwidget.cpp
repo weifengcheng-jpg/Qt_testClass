@@ -41,9 +41,9 @@ void MainWidget::initWidgets()
     connect(m_penColorBtn, SIGNAL(clicked(bool)), this, SLOT(ShowPenColor()));
 
     m_penWidthLabel = new QLabel(tr("画线宽度"));
-    m_penwWidthSpinBox = new QSpinBox;
-    m_penwWidthSpinBox->setRange(1, 20);
-    connect(m_penwWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(ShowPenWidth(int)));
+    m_penWidthSpinBox = new QSpinBox;
+    m_penWidthSpinBox->setRange(1, 20);
+    connect(m_penWidthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(ShowPenWidth(int)));
 
     m_penStyleLabel = new QLabel(tr("画笔风格"));
     m_penStyleComboBox = new QComboBox;
@@ -129,7 +129,7 @@ void MainWidget::initWidgets()
 
     //画线宽度
     m_rightLayout->addWidget(m_penWidthLabel, 2, 0);
-    m_rightLayout->addWidget(m_penwWidthSpinBox, 2, 1);
+    m_rightLayout->addWidget(m_penWidthSpinBox, 2, 1);
 
     //画笔风格
     m_rightLayout->addWidget(m_penStyleLabel, 3, 0);
@@ -167,11 +167,30 @@ void MainWidget::initWidgets()
 
 void MainWidget::ShowShape(int value)
 {
+    PaintArea::Shape shape = PaintArea::Shape(m_shapeCombox->itemData(value).toInt());
+    m_paintArea->setShape(shape);
+
 
 }
 
+
 void MainWidget::ShowPenColor()
 {
+    QColor color = QColorDialog::getColor(Qt::black);
+    m_penColorFrame->setPalette(QPalette(color)); //
+    int value = m_penWidthSpinBox->value();
+
+    int styleIndex = m_penStyleComboBox->currentIndex(); //风格
+    Qt::PenStyle style = Qt::PenStyle(m_penStyleComboBox->itemData(styleIndex).toInt());
+
+    int capIndex = m_penCapComboBox->currentIndex(); //笔帽
+    Qt::PenCapStyle cap = Qt::PenCapStyle(m_penCapComboBox->itemData(capIndex).toInt());
+
+    int joinIndex = m_penJoinComboBox->currentIndex(); //笔帽
+    Qt::PenJoinStyle join = Qt::PenJoinStyle(m_penJoinComboBox->itemData(joinIndex).toInt());
+
+    m_paintArea->setPen(QPen(color, value, style, cap, join));
+
 
 }
 
@@ -212,5 +231,18 @@ void MainWidget::ShowBrush(int value)
 
 void MainWidget::ShowPenStyle(int value)
 {
+    QColor color = m_penColorFrame->palette().color(QPalette::Window);
+    m_penColorFrame->setPalette(QPalette(color)); //
+    int penWidth = m_penWidthSpinBox->value();
 
+
+    Qt::PenStyle style = Qt::PenStyle(m_penStyleComboBox->itemData(value).toInt());
+
+    int capIndex = m_penCapComboBox->currentIndex(); //笔帽
+    Qt::PenCapStyle cap = Qt::PenCapStyle(m_penCapComboBox->itemData(capIndex).toInt());
+
+    int joinIndex = m_penJoinComboBox->currentIndex(); //笔帽
+    Qt::PenJoinStyle join = Qt::PenJoinStyle(m_penJoinComboBox->itemData(joinIndex).toInt());
+
+    m_paintArea->setPen(QPen(color, penWidth, style, cap, join));
 }

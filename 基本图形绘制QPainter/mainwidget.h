@@ -8,6 +8,7 @@
 #include <QSpinBox>
 #include <QPushButton>
 #include <QGridLayout>
+#include <QColorDialog>
 #include "paintarea.h"
 
 class MainWidget : public QWidget
@@ -43,7 +44,7 @@ private:
     QPushButton* m_penColorBtn;
 
     QLabel* m_penWidthLabel; //线宽
-    QSpinBox* m_penwWidthSpinBox;
+    QSpinBox* m_penWidthSpinBox;
 
     QLabel* m_penStyleLabel; //画笔风格
     QComboBox* m_penStyleComboBox;
