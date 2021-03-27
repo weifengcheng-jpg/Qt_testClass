@@ -23,10 +23,11 @@ public:
 
 protected:
     void paintEvent(QPaintEvent* event) override;
-
+public:
+    QPen m_pen;
 private:
     Shape m_shape;
-    QPen m_pen;
+
     QBrush m_brush;
     Qt::FillRule m_fillrule;
 

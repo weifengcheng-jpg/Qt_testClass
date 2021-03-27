@@ -315,14 +315,23 @@ void MainWidget::ShowPenStyle(int value)
     int penWidth = m_penWidthSpinBox->value();
 
     Qt::PenStyle style = Qt::PenStyle(m_penStyleComboBox->itemData(value).toInt());
+    if (style == Qt::CustomDashLine) { //自定义
+        QVector<qreal> dashes;
+        qreal space = 4;
+        dashes<< 1 << space << 2 << space << 3 << space << 4 << space;
+        m_paintArea->m_pen.setDashPattern(dashes);
+        m_paintArea->update();
+    } else { //非自定义
+        int capIndex = m_penCapComboBox->currentIndex();
+        Qt::PenCapStyle cap = Qt::PenCapStyle(m_penCapComboBox->itemData(capIndex).toInt());
 
-    int capIndex = m_penCapComboBox->currentIndex();
-    Qt::PenCapStyle cap = Qt::PenCapStyle(m_penCapComboBox->itemData(capIndex).toInt());
+        int joinIndex = m_penJoinComboBox->currentIndex();
+        Qt::PenJoinStyle join = Qt::PenJoinStyle(m_penJoinComboBox->itemData(joinIndex).toInt());
 
-    int joinIndex = m_penJoinComboBox->currentIndex();
-    Qt::PenJoinStyle join = Qt::PenJoinStyle(m_penJoinComboBox->itemData(joinIndex).toInt());
+        m_paintArea->setPen(QPen(color, penWidth, style, cap, join));
+    }
 
-    m_paintArea->setPen(QPen(color, penWidth, style, cap, join));
+
 }
 
 
