@@ -196,47 +196,11 @@ void MainWidget::ShowPenColor()
 
 void MainWidget::ShowPenWidth(int value)
 {
-
-}
-
-void MainWidget::ShowPenCap(int value)
-{
-
-}
-
-void MainWidget::ShowPenJoin(int value)
-{
-
-}
-
-void MainWidget::ShowFillRule(int value)
-{
-
-}
-
-void MainWidget::ShowSpreadStyle(int value)
-{
-
-}
-
-void MainWidget::ShowBrushColor()
-{
-
-}
-
-void MainWidget::ShowBrush(int value)
-{
-
-}
-
-void MainWidget::ShowPenStyle(int value)
-{
     QColor color = m_penColorFrame->palette().color(QPalette::Window);
-    m_penColorFrame->setPalette(QPalette(color)); //
-    int penWidth = m_penWidthSpinBox->value();
+    int penWidth = value;
 
-
-    Qt::PenStyle style = Qt::PenStyle(m_penStyleComboBox->itemData(value).toInt());
+    int styleIndex = m_penStyleComboBox->currentIndex();
+    Qt::PenStyle style = Qt::PenStyle(m_penStyleComboBox->itemData(styleIndex).toInt());
 
     int capIndex = m_penCapComboBox->currentIndex(); //笔帽
     Qt::PenCapStyle cap = Qt::PenCapStyle(m_penCapComboBox->itemData(capIndex).toInt());
@@ -245,4 +209,121 @@ void MainWidget::ShowPenStyle(int value)
     Qt::PenJoinStyle join = Qt::PenJoinStyle(m_penJoinComboBox->itemData(joinIndex).toInt());
 
     m_paintArea->setPen(QPen(color, penWidth, style, cap, join));
+
 }
+
+void MainWidget::ShowPenCap(int value)
+{
+    QColor color = m_penColorFrame->palette().color(QPalette::Window);
+    int penWidth = m_penWidthSpinBox->value();
+
+    int styleIndex = m_penStyleComboBox->currentIndex();
+    Qt::PenStyle style = Qt::PenStyle(m_penStyleComboBox->itemData(styleIndex).toInt());
+
+    //int capIndex = m_penCapComboBox->currentIndex();
+    Qt::PenCapStyle cap = Qt::PenCapStyle(m_penCapComboBox->itemData(value).toInt());
+
+    int joinIndex = m_penJoinComboBox->currentIndex();
+    Qt::PenJoinStyle join = Qt::PenJoinStyle(m_penJoinComboBox->itemData(joinIndex).toInt());
+
+    m_paintArea->setPen(QPen(color, penWidth, style, cap, join));
+}
+
+//画笔连接点
+void MainWidget::ShowPenJoin(int value)
+{
+    QColor color = m_penColorFrame->palette().color(QPalette::Window);
+    int penWidth = m_penWidthSpinBox->value();
+
+    int styleIndex = m_penStyleComboBox->currentIndex();
+    Qt::PenStyle style = Qt::PenStyle(m_penStyleComboBox->itemData(styleIndex).toInt());
+
+    int capIndex = m_penCapComboBox->currentIndex();
+    Qt::PenCapStyle cap = Qt::PenCapStyle(m_penCapComboBox->itemData(capIndex).toInt());
+
+    //int joinIndex = m_penJoinComboBox->currentIndex();
+    Qt::PenJoinStyle join = Qt::PenJoinStyle(m_penJoinComboBox->itemData(value).toInt());
+
+    m_paintArea->setPen(QPen(color, penWidth, style, cap, join));
+}
+
+//填充矩形
+void MainWidget::ShowFillRule(int value)
+{
+    Qt::FillRule rule = Qt::FillRule(value);
+    m_paintArea->setFillRule(rule);
+
+
+}
+
+void MainWidget::ShowSpreadStyle(int value)
+{
+    m_spread = QGradient::Spread(value);
+}
+
+void MainWidget::ShowBrushColor()
+{
+    QColor color = QColorDialog::getColor(Qt::green);
+    m_brushColorFrame->setPalette(QPalette(color));
+    ShowBrush(m_brushStyleComboBox->currentIndex());
+}
+
+void MainWidget::ShowBrush(int value)
+{
+    QColor color = m_brushColorFrame->palette().color(QPalette::Window);
+
+    int brush = m_brushStyleComboBox->itemData(value).toInt();
+    Qt::BrushStyle style = Qt::BrushStyle(brush);
+    //线性渐变
+    if (style == Qt::LinearGradientPattern) {
+        //指定线性渐变的区域
+        QLinearGradient lineGradient(0, 0, 400, 400);
+
+        //指定某个位置的渐变色, pos取值0~1
+        lineGradient.setColorAt(0.0, Qt::white);
+        lineGradient.setColorAt(0.2, color);
+        lineGradient.setColorAt(1.0, Qt::black);
+        lineGradient.setSpread(m_spread);
+
+        m_paintArea->setBrush(lineGradient);
+    } else if (style == Qt::RadialGradientPattern) { //环形渲染
+        //中心坐标, 半径长度, 焦点坐标, 如果需要对称则中心坐标和焦点坐标保持一致
+        QRadialGradient radialGrdient(200, 200, 150, 200, 200);
+        radialGrdient.setColorAt(0.0, Qt::white);
+        radialGrdient.setColorAt(0.2, color);
+        radialGrdient.setColorAt(1.0, Qt::black);
+
+        m_paintArea->setBrush(radialGrdient);
+    } else if (style == Qt::ConicalGradientPattern) { //弧度渲染(锥形渲染)
+        //中心坐标, 角度
+        QConicalGradient conicaoGradient(200, 200, 30);
+        conicaoGradient.setColorAt(0.0, Qt::white);
+        conicaoGradient.setColorAt(0.2, color);
+        conicaoGradient.setColorAt(1.0, Qt::black);
+
+        m_paintArea->setBrush(conicaoGradient);
+    } else if (style == Qt::TexturePattern) {
+        m_paintArea->setBrush(QBrush(QPixmap("fly3")));
+    } else {
+        m_paintArea->setBrush(QBrush(color, style));
+    }
+}
+
+void MainWidget::ShowPenStyle(int value)
+{
+    QColor color = m_penColorFrame->palette().color(QPalette::Window);
+    int penWidth = m_penWidthSpinBox->value();
+
+    Qt::PenStyle style = Qt::PenStyle(m_penStyleComboBox->itemData(value).toInt());
+
+    int capIndex = m_penCapComboBox->currentIndex();
+    Qt::PenCapStyle cap = Qt::PenCapStyle(m_penCapComboBox->itemData(capIndex).toInt());
+
+    int joinIndex = m_penJoinComboBox->currentIndex();
+    Qt::PenJoinStyle join = Qt::PenJoinStyle(m_penJoinComboBox->itemData(joinIndex).toInt());
+
+    m_paintArea->setPen(QPen(color, penWidth, style, cap, join));
+}
+
+
+

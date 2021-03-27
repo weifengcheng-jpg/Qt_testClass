@@ -60,6 +60,7 @@ private:
 
     QLabel* m_spreadLabel; //铺展效果
     QComboBox* m_spreadComboBox;
+    QGradient::Spread m_spread;
 
     QLabel* m_brushColorLabel; //画刷颜色
     QFrame* m_brushColorFrame;
